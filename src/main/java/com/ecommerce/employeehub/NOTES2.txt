@@ -1,0 +1,46 @@
+
+THE WHOLE PROJECT STRUCTURE:
+As EmployeeHub grows
+
+Eventually you'll have Department and User too:
+
+com.example.employeehub
+│
+├── EmployeehubApplication.java
+│
+├── controller
+│   ├── EmployeeController.java
+│   ├── DepartmentController.java
+│   └── UserController.java
+│
+├── service
+│   ├── EmployeeService.java
+│   ├── EmployeeServiceImpl.java
+│   ├── DepartmentService.java
+│   ├── DepartmentServiceImpl.java
+│   ├── UserService.java
+│   └── UserServiceImpl.java
+│
+├── repository
+│   ├── EmployeeRepository.java
+│   ├── DepartmentRepository.java
+│   └── UserRepository.java
+│
+├── entity
+│   ├── Employee.java
+│   ├── Department.java
+│   └── User.java
+│
+├── dto
+│   ├── EmployeeRequest.java
+│   ├── EmployeeResponse.java
+│   └── LoginRequest.java
+│
+├── exception
+│   ├── ResourceNotFoundException.java
+│   └── GlobalExceptionHandler.java
+│
+└── security
+    ├── SecurityConfig.java
+    ├── JwtService.java
+    └── JwtAuthenticationFilter.java

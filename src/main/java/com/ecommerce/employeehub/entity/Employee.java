@@ -70,3 +70,9 @@ public class Employee {
         this.salary = salary;
     }
 }
+
+//Most real work project use private for its fields. In that way, Other class can access indirectly
+// through its methods with certain conditions
+
+// private fields + getters/setters = a common way to implement encapsulation.
+//This getter and setter methods are used later in the Service Implementation class.
