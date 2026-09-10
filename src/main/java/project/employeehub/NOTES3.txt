@@ -136,3 +136,42 @@ Verify database/data behavior
 Report defects
 
 So don't think of what you're doing as "just fixing errors." You're developing the debugging and API-testing mindset that real backend developers use every day.
+
+# EXCEPTION HANDLING AND GLOBAL EXCEPTION HANDLING
+
+So, for all the globalexception, I can do the same methods rite :@ExceptionHandler(EmployeeNotFoundException.class)     @ResponseStatus(HttpStatus.NOT_FOUND)     public String handleEmployeeNotFound(EmployeeNotFoundException ex) {         return ex.getMessage();     }
+
+Yes — the pattern is the same, but the exception type, HTTP status, method name, and response can change depending on the problem.
+
+For example, if later you create a DepartmentNotFoundException, you could have:
+
+@ExceptionHandler(DepartmentNotFoundException.class)
+@ResponseStatus(HttpStatus.NOT_FOUND)
+public String handleDepartmentNotFound(DepartmentNotFoundException ex) {
+    return ex.getMessage();
+}
+
+And for a bad request:
+
+@ExceptionHandler(IllegalArgumentException.class)
+@ResponseStatus(HttpStatus.BAD_REQUEST)
+public String handleBadRequest(IllegalArgumentException ex) {
+    return ex.getMessage();
+}
+The pattern to remember
+@ExceptionHandler(WHAT_EXCEPTION)
+@ResponseStatus(WHAT_HTTP_STATUS)
+public String handleSomething(EXCEPTION_OBJECT ex) {
+    return ex.getMessage();
+}
+
+So you can think of it as a template:
+
+Part	Purpose
+@ExceptionHandler(...)	Which exception should I catch?
+@ResponseStatus(...)	What HTTP status should I return?
+handleSomething(...)	What should I call the handling method?
+ex	The actual exception object
+ex.getMessage()	Get the error message
+
+One important point: you don't need a separate handler for every single exception. Later, we'll learn how to handle groups of exceptions and return a more professional JSON error response

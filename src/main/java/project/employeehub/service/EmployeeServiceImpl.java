@@ -1,6 +1,7 @@
 package project.employeehub.service;
 
 import project.employeehub.entity.Employee;
+import project.employeehub.exception.EmployeeNotFoundException;
 import project.employeehub.repository.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -36,10 +37,19 @@ public class EmployeeServiceImpl implements EmployeeService {
     */
 
     @Override
-    public Employee getEmployeeById(Long Id) {
-        return employeeRepository.findById(Id)
-                .orElseThrow(); //Means throw an exception if there is no employee with particular id.
+    public Employee getEmployeeById(Long id) {
+        return employeeRepository.findById(id)
+                .orElseThrow(() -> //-> meaning lambda arrow expression to do the below codes.
+                        //Means throw a default exception if there is no employee with particular id. E.g new employee();
+
+                    new EmployeeNotFoundException( //Creates an object without referencing a variable.
+                            "Employee not found with id: " + id));// 2 brackets because we are inside 2 method calls.
+        /*Custom Exception: "If no employee is found, create an EmployeeNotFoundException containing a message that includes
+         the employee ID, and throw it." */
+
     }
+
+
 
     @Override
     public Employee updateEmployee(Long id, Employee employee) {
