@@ -1,4 +1,4 @@
-package com.ecommerce.employeehub.entity;
+package project.employeehub.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -29,6 +29,13 @@ public class Employee {
      This is the concept of OOPs encapsulation. The object controls how its internal data can be accessed and changed.
      */
 
+    public Long getId() {  //without this getter id method, id will be missing in postman.
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String getFirstName() {
         return firstName;

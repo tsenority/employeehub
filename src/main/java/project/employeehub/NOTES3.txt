@@ -1,0 +1,138 @@
+# DEBUGGING SOLUTIONS
+
+* POSTMAN ISSUES:
+If you have only created Employee #1, then:
+
+GET /api/employees/1
+
+finds the employee → 200 OK ✅
+
+But:
+
+GET /api/employees/2
+
+can't find an employee with ID 2.
+
+Why are you getting 500?
+
+Your Service currently has:
+
+public Employee getEmployeeById(Long id) {
+    return employeeRepository.findById(id)
+            .orElseThrow();
+}
+
+If ID 2 doesn't exist:
+
+findById(2)
+     ↓
+Optional.empty()
+     ↓
+.orElseThrow()
+     ↓
+Exception
+     ↓
+500 Internal Server Error
+
+So your application is behaving exactly according to the code we wrote, but 500 isn't the ideal response for a missing employee.
+
+In a professional REST API, we'd normally want:
+
+GET /api/employees/2
+        ↓
+Employee doesn't exist
+        ↓
+404 Not Found
+
+That's actually a good next concept: proper exception handling.
+
+SO, WHEN we are reading the postman errors and fixing it, is it the concept of REST API Testing?
+
+Yes — partly. You're already doing the basic workflow of REST API testing with Postman. 👍
+
+But there's an important distinction.
+
+What you're doing right now
+
+When you send:
+
+POST /api/employees
+
+and get:
+
+500 Internal Server Error
+
+then investigate the error, fix the code, and send the request again, you're doing manual API testing/debugging.
+
+You're testing things like:
+
+Does the endpoint respond?
+Is the HTTP method correct?
+Is the JSON correct?
+Does the request reach the Controller?
+Does the Service work?
+Does the Repository work?
+Does the database save/retrieve the data?
+What status code comes back?
+
+That's absolutely useful REST API testing experience.
+
+But professional API testing goes further
+
+A tester might create a test like:
+
+POST /api/employees
+        ↓
+Expected: 201 Created
+        ↓
+Verify response contains employee ID
+        ↓
+GET /api/employees/{id}
+        ↓
+Verify employee exists
+
+And then test negative scenarios:
+
+GET /api/employees/999
+Expected: 404 Not Found
+POST /api/employees
+Missing email
+Expected: 400 Bad Request
+POST /api/employees
+Invalid salary
+Expected: 400 Bad Request
+You're actually learning both sides
+
+This is particularly valuable for your Java training because you're experiencing:
+
+Developer side:
+
+Build API
+ ↓
+Test with Postman
+ ↓
+Get error
+ ↓
+Read stack trace
+ ↓
+Fix code
+ ↓
+Test again
+
+And later you can learn the QA/API testing side:
+
+API specification
+ ↓
+Create test cases
+ ↓
+Send requests
+ ↓
+Verify status codes
+ ↓
+Verify response body
+ ↓
+Verify database/data behavior
+ ↓
+Report defects
+
+So don't think of what you're doing as "just fixing errors." You're developing the debugging and API-testing mindset that real backend developers use every day.

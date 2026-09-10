@@ -1,7 +1,7 @@
-package com.ecommerce.employeehub.service;
+package project.employeehub.service;
 
-import com.ecommerce.employeehub.entity.Employee;
-import com.ecommerce.employeehub.repository.EmployeeRepository;
+import project.employeehub.entity.Employee;
+import project.employeehub.repository.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

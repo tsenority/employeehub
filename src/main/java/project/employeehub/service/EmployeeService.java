@@ -1,6 +1,6 @@
-package com.ecommerce.employeehub.service;
+package project.employeehub.service;
 
-import com.ecommerce.employeehub.entity.Employee;
+import project.employeehub.entity.Employee;
 
 import java.util.List;
 

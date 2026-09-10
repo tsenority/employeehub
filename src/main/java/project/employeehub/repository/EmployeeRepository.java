@@ -1,6 +1,6 @@
-package com.ecommerce.employeehub.repository;
+package project.employeehub.repository;
 
-import com.ecommerce.employeehub.entity.Employee;
+import project.employeehub.entity.Employee;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 

@@ -1,4 +1,4 @@
-package com.ecommerce.employeehub;
+package project.employeehub;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

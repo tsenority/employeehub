@@ -44,3 +44,36 @@ com.example.employeehub
     ├── SecurityConfig.java
     ├── JwtService.java
     └── JwtAuthenticationFilter.java
+
+    @RestController:
+    @RequestMapping("/api/employees")
+                  ↓
+           Base address
+                  ↓
+       ┌──────────┼──────────┐
+       ↓          ↓          ↓
+     GET        POST       DELETE
+       ↓          ↓          ↓
+    /employees /employees /employees/5
+
+    # API Testing:  http://localhost:8080/api/employees
+    What should you expect?
+
+    Since we haven't added any employees to the database yet, you will probably get:
+
+    []
+
+    That's success, not an error. It means:
+
+    Controller received the request → Service called Repository → Repository checked MySQL →
+    there are currently no employees → empty list returned.
+
+    #JSON BODY FORMAT:
+    {
+        "firstname": "John",
+        "lastname": "Smith",
+        "email": "john@gmail.com",
+        "phone": "801-555-1234",
+        "salary": 50000
+
+    }
