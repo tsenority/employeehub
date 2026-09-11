@@ -1,4 +1,5 @@
 package project.employeehub.controller;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import project.employeehub.entity.Employee;
@@ -21,7 +22,7 @@ public class EmployeeController {
     }
 
     @PostMapping  //CREATE METHOD
-    public Employee createEmployee(@RequestBody Employee employee) {
+    public Employee createEmployee(@Valid @RequestBody Employee employee) { // @Validation for creating employee
         /* @RequestBody --We want Spring to take the JSON sent in Postman's body and turn it into an Employee object. */
         return employeeService.createEmployee(employee);
     }
@@ -35,7 +36,8 @@ public class EmployeeController {
 
 
     @PutMapping("/{id}") //UPDATE METHOD,  (@PathVariable: Take the id and @RequestBody: return update info for employee
-    public Employee updateEmployee(@PathVariable Long id, @RequestBody Employee employee) {
+    public Employee updateEmployee(@PathVariable Long id,
+                                   @Valid @RequestBody Employee employee) { // @Valid = for update method
         return employeeService.updateEmployee(id, employee);
     }
 

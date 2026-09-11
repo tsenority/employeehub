@@ -4,6 +4,9 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Positive;
 
 
 @Entity   //tells --this java class represents data that should be stored in database table.
@@ -15,10 +18,20 @@ public class Employee {
 
     //used private identifier so that other classes cant directly access the field. Encapsulation oops concept.
     //can be accessed through the use of methods. Not directly.
+    @NotBlank   //Valiidation Concept : Firstname shouldn't be empty.
     private String firstName;
+
+    @NotBlank
     private String lastName;
+
+    @NotBlank
+    @Email  //should be email format
     private String email;
-    private String phone; //phone numbers can have dashes and area codes.
+
+    @NotBlank
+    private String phone;//phone numbers can have dashes and area codes.
+
+    @Positive  //Means must be greater than 0.
     private double salary;  //can contain decimal values. example : 62500.50
 
 

@@ -147,3 +147,171 @@ As you encounter more errors, you'll start recognizing patterns like NullPointer
  That's why what you just accomplished is valuable. You took an internal Java exception and turned it into a meaningful REST API response.
 
  And yes — you just tested a real-world Spring Boot API error-handling pattern.
+
+ IntelliJ has a built-in debugger, and it's a major tool you'll use as a Java developer. Debugging is more than just reading errors and fixing them.
+
+ Think of it this way:
+
+ 1. Errors → IntelliJ tells you something is wrong
+
+ For example:
+
+ Employee employee = employeeRepository.findById(id)
+         .orElseThrow(() -> new EmployeeNotFoundException(...));
+
+ If your application crashes, you look at the error/stack trace and figure out where the problem occurred.
+
+ That's what you've mostly been doing with EmployeeHub so far.
+
+ 2. Debugger → You can watch your code execute
+
+ IntelliJ lets you pause your application while it's running.
+
+ You put a breakpoint on a line:
+
+ Employee existingEmployee = employeeRepository.findById(id)
+         .orElseThrow(...);
+
+ Then you send your PUT request from Postman.
+
+ When execution reaches that line, IntelliJ pauses.
+
+ You can then inspect:
+
+ What is id?
+ What is inside existingEmployee?
+ What values came from Postman?
+ Which method called this method?
+ What happens when you execute the next line?
+ Where exactly does the program go?
+
+ You can step through the program one line at a time.
+
+ 3. The basic IntelliJ debugging tools
+
+ You'll eventually use:
+
+ Breakpoint 🔴
+ Pause execution at a particular line.
+
+ Step Over (F8)
+ Execute the current line and move to the next line.
+
+ Step Into (F7)
+ Go inside the method being called.
+
+ Step Out (Shift+F8)
+ Finish the current method and return to the caller.
+
+ Resume (F9)
+ Continue running until the next breakpoint.
+
+ Variables / Debug window
+ See the current values of your objects and variables.
+
+ For EmployeeHub
+
+ You're actually at a perfect point to start learning debugging.
+
+ For example, your flow is:
+
+ Postman
+    ↓
+ EmployeeController
+    ↓
+ EmployeeService
+    ↓
+ EmployeeRepository
+    ↓
+ MySQL
+
+ With the debugger, you can literally watch a request travel through this flow.
+
+ That's much more valuable than simply memorizing:
+
+ "Controller calls Service, Service calls Repository."
+
+ You can see it happen.
+
+ So yes, as a Java developer you will use both:
+
+ Error/stack trace → tells you where something went wrong
+
+ Debugger → lets you investigate what the program is actually doing
+
+ And don't worry about mastering the debugger right now. We can introduce it naturally in EmployeeHub with one small debugging
+ exercise when you're ready.
+
+ #  VALIDATION:
+ Step 1 — Add validation dependency
+
+ First, we need to give Spring Boot the validation capability.
+
+ Open your pom.xml and add this inside <dependencies>:
+
+ <dependency>
+     <groupId>org.springframework.boot</groupId>
+     <artifactId>spring-boot-starter-validation</artifactId>
+ </dependency>
+
+ Your project will then understand annotations such as:
+
+ @NotBlank
+ @Email
+ @Positive
+ @Valid
+ What we're going to build
+
+ Eventually, when someone sends:
+
+ {
+   "firstName": "",
+   "lastName": "Smith",
+   "email": "not-an-email",
+   "phone": "801-555-1234",
+   "salary": -5000
+ }
+
+ instead of accepting bad data, EmployeeHub will respond with a 400 Bad Request.
+
+ We'll apply validation mainly to the Employee entity, then connect it to the controller, and finally test it through Postman.
+
+ Perfect! 🎯 Your validation + global exception handling is working.
+
+ You just built a very common real-world Spring Boot pattern:
+
+ Postman
+    ↓
+ Controller
+    ↓
+ @Valid
+    ↓
+ @NotBlank
+    ↓
+ ❌ Invalid input
+    ↓
+ MethodArgumentNotValidException
+    ↓
+ GlobalExceptionHandler
+    ↓
+ HTTP 400
+    ↓
+ "must not be blank"
+ What you've learned
+
+ You now understand three important pieces:
+
+ @NotBlank → defines the rule.
+ @Valid → tells Spring to check the rules.
+ GlobalExceptionHandler → controls how validation failures are returned to the client.
+
+ That's much closer to how a real REST API is built.
+
+ Next: add more validation rules
+
+ We'll eventually validate:
+
+ firstName → @NotBlank
+ lastName  → @NotBlank
+ email     → @Email + @NotBlank
+ salary    → @Positive
