@@ -1,5 +1,7 @@
 package project.employeehub.service;
 
+import jakarta.validation.Valid;
+import project.employeehub.dto.EmployeeRequest;
 import project.employeehub.entity.Employee;
 
 import java.util.List;
@@ -13,7 +15,7 @@ public interface EmployeeService {  //Interface meaning must follow its contract
 
     //FIVE CRUD METHODS
     //1. CREATE EMPLOYEE METHOD
-    Employee createEmployee(Employee employee);//method to create employees.
+    Employee createEmployee(@Valid EmployeeRequest employeeRequest);//method to create employees.
 
     //2. GET OR FIND ALL THE EMPLOYEES method
     List<Employee> getAllEmployees();//method to return list of all Employee objects

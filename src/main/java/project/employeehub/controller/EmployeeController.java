@@ -2,6 +2,7 @@ package project.employeehub.controller;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import project.employeehub.dto.EmployeeRequest;
 import project.employeehub.entity.Employee;
 import project.employeehub.service.EmployeeService;
 
@@ -21,11 +22,22 @@ public class EmployeeController {
         return employeeService.getAllEmployees(); //calling employeeService method from its class.
     }
 
+    /*  Change POST to use the DTO, instead of entity
+
+    In EmployeeController.java, find:
     @PostMapping  //CREATE METHOD
     public Employee createEmployee(@Valid @RequestBody Employee employee) { // @Validation for creating employee
-        /* @RequestBody --We want Spring to take the JSON sent in Postman's body and turn it into an Employee object. */
+         @RequestBody --We want Spring to take the JSON sent in Postman's body and turn it into an Employee object.
         return employeeService.createEmployee(employee);
+        Change it to:
+            */
+
+    @PostMapping  //CREATE METHOD
+    public Employee createEmployee(@Valid @RequestBody EmployeeRequest employeeRequest) {
+        return employeeService.createEmployee(employeeRequest);
     }
+
+
 
     @GetMapping("/{id}") //READ BY ID METHOD
     public Employee getEmployeeBYId(@PathVariable Long id) {

@@ -315,3 +315,35 @@ As you encounter more errors, you'll start recognizing patterns like NullPointer
  lastName  → @NotBlank
  email     → @Email + @NotBlank
  salary    → @Positive
+
+
+ DTO:
+ The biggest idea
+
+ Think of the DTO as a boundary/filter between your API and your database model.
+
+         OUTSIDE WORLD
+              │
+              ▼
+     ┌─────────────────┐
+     │ EmployeeRequest │  ← What client is allowed to send
+     └─────────────────┘
+              │
+              ▼
+          SERVICE
+              │
+              ▼
+     ┌─────────────────┐
+     │ Employee Entity │  ← How your application stores it
+     └─────────────────┘
+              │
+              ▼
+           DATABASE
+ Is DTO required for every project?
+
+ No.
+
+ Small/simple applications can use entities directly, like your EmployeeHub did initially.
+
+ But in larger professional applications, DTOs are very common because they give you better separation,
+ security, validation, and control over your API.

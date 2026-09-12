@@ -1,5 +1,7 @@
 package project.employeehub.service;
 
+import jakarta.validation.Valid;
+import project.employeehub.dto.EmployeeRequest;
 import project.employeehub.entity.Employee;
 import project.employeehub.exception.EmployeeNotFoundException;
 import project.employeehub.repository.EmployeeRepository;
@@ -17,9 +19,37 @@ public class EmployeeServiceImpl implements EmployeeService {
 
 
     @Override //overrides method from EmployeeService interface
-    public Employee createEmployee(Employee employee) {
+    public Employee createEmployee(@Valid EmployeeRequest employeeRequest) {
+
+        Employee employee = new Employee();//EmployeeRequest is the incoming data, while Employee is the database entity.
+
+        employee.setFirstName(employeeRequest.getFirstName());
+        employee.setLastName(employeeRequest.getLastName());
+        employee.setEmail(employeeRequest.getEmail());
+        employee.setPhone(employeeRequest.getPhone());
+        employee.setSalary(employeeRequest.getSalary());
+
         return employeeRepository.save(employee);
     }
+    /*
+        Postman JSON
+     ↓
+EmployeeRequest
+     ↓
+EmployeeService
+     ↓
+Employee entity
+     ↓
+employeeRepository.save(employee)
+     ↓
+MySQL
+
+        The important thing to understand is why we did this:
+
+The controller receives a DTO because we don't want the outside API directly controlling our database entity.
+
+Then the service converts the DTO into an Employee entity before saving it.
+     */
 
     @Override
     public List<Employee> getAllEmployees() {

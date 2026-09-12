@@ -175,3 +175,69 @@ ex	The actual exception object
 ex.getMessage()	Get the error message
 
 One important point: you don't need a separate handler for every single exception. Later, we'll learn how to handle groups of exceptions and return a more professional JSON error response
+
+INPUT DATA ROLES:
+Usually, the developer defines the JSON structure, but the client/user provides the actual data.
+
+Think of it like a form.
+
+In a real workplace
+
+The backend developer defines what the API expects:
+
+{
+  "firstName": "string",
+  "lastName": "string",
+  "email": "string",
+  "phone": "string",
+  "salary": 50000
+}
+
+The developer says, essentially:
+
+"If you want to create an employee, send me these fields in this format."
+
+Then the frontend application—usually built by another developer or frontend team—creates the actual request:
+
+{
+  "firstName": "John",
+  "lastName": "Smith",
+  "email": "john@example.com",
+  "phone": "555-1234",
+  "salary": 60000
+}
+
+The end user normally doesn't manually type JSON.
+
+Instead:
+
+Employee enters information in a web form
+              ↓
+Frontend collects the information
+              ↓
+Frontend creates JSON request
+              ↓
+Backend API receives JSON
+              ↓
+EmployeeRequest DTO
+              ↓
+Employee entity
+              ↓
+Database
+What you're doing with Postman
+
+You're basically pretending to be the frontend.
+
+When you manually enter:
+
+{
+  "firstName": "John",
+  "lastName": "Smith"
+}
+
+you're simulating the request that a real frontend would send.
+
+So as a Java backend developer, you generally don't spend your workday manually creating JSON. You build the API contract and
+backend logic, while the frontend/client sends the data according to that contract.
+
+That's one reason your EmployeeHub project is useful: Postman is letting you play both sides while you're learning.
