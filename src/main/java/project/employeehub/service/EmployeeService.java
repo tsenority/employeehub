@@ -2,6 +2,7 @@ package project.employeehub.service;
 
 import jakarta.validation.Valid;
 import project.employeehub.dto.EmployeeRequest;
+import project.employeehub.dto.EmployeeResponse;
 import project.employeehub.entity.Employee;
 
 import java.util.List;
@@ -15,17 +16,17 @@ public interface EmployeeService {  //Interface meaning must follow its contract
 
     //FIVE CRUD METHODS
     //1. CREATE EMPLOYEE METHOD
-    Employee createEmployee(@Valid EmployeeRequest employeeRequest);//method to create employees.
+    EmployeeResponse createEmployee(@Valid EmployeeRequest employeeRequest);//method to create employees.
 
     //2. GET OR FIND ALL THE EMPLOYEES method
-    List<Employee> getAllEmployees();//method to return list of all Employee objects
+    List<EmployeeResponse> getAllEmployees();//method to return list of all Employee objects
 
 
     //2.. GET OR FIND EMPLOYEE BY ID(Particular Employee) Method
-    Employee getEmployeeById(Long Id);
+    EmployeeResponse getEmployeeById(Long Id);
 
     //4.. UPDATE EMPLOYEE METHOD
-    Employee updateEmployee(Long id, Employee employee); /* Long id = Which id should be updated
+    EmployeeResponse updateEmployee(Long id, EmployeeRequest employeeRequest); /* Long id = Which id should be updated
     Example : updateEmployee(5, employee)
              ↓
     Find employee #5

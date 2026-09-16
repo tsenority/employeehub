@@ -4,6 +4,8 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Positive;
 
+
+//Class to request input from frontend user with validations
 public class EmployeeRequest {
     //Same as Employee Entity Class---Variables and Getter/Setter Methods.
     /* Entity = how the application stores the data.
@@ -27,6 +29,16 @@ public class EmployeeRequest {
 
     @Positive
     private double salary;
+
+    private Long departmentId;
+
+    public Long getDepartmentId() {
+        return departmentId;
+    }
+
+    public void setDepartmentId(Long departmentId) {
+        this.departmentId = departmentId;
+    }
 
 
     public String getFirstName() {

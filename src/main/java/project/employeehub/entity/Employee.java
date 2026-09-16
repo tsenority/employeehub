@@ -1,12 +1,13 @@
 package project.employeehub.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Positive;
+
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.JoinColumn;
+import project.employeehub.entity.Department;
 
 
 @Entity   //tells --this java class represents data that should be stored in database table.
@@ -33,6 +34,21 @@ public class Employee {
 
     @Positive  //Means must be greater than 0.
     private double salary;  //can contain decimal values. example : 62500.50
+
+
+
+    @ManyToOne    //many employees belong to 1 department. also known as JPA relationship concept.
+    @JoinColumn(name = "department_id") //connecting column
+    private Department department; //Employee has a reference to a Department object. just like entity,service connection.
+
+// GETTER AND SETTER METHOD: Because department is a private field, the rest of your application needs a way to read and change it.
+    public Department getDepartment() {
+        return department;
+    }
+
+    public void setDepartment(Department department) {
+        this.department = department;
+    }
 
 
     /*GETTER AND SETTER METHOD. can generate from intellij directly.

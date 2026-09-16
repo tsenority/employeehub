@@ -241,3 +241,134 @@ So as a Java backend developer, you generally don't spend your workday manually 
 backend logic, while the frontend/client sends the data according to that contract.
 
 That's one reason your EmployeeHub project is useful: Postman is letting you play both sides while you're learning.
+
+Request DTO vs Response DTO
+
+Right now you have:
+
+EmployeeRequest
+
+Its job is:
+
+Data coming INTO the backend.
+
+For example:
+
+{
+  "firstName": "John",
+  "lastName": "Smith",
+  "email": "john@example.com",
+  "phone": "555-1234",
+  "salary": 60000
+}
+
+But when the backend sends data BACK to the frontend, we may not want to send exactly the same information.
+
+For example, your database Employee entity might eventually contain:
+
+id
+firstName
+lastName
+email
+phone
+salary
+department
+createdAt
+updatedAt
+
+You might want the API response to contain only:
+
+{
+  "id": 3,
+  "firstName": "John",
+  "lastName": "Smith",
+  "email": "john@example.com"
+}
+
+That's where a response DTO comes in.
+
+Think of it like this
+              BACKEND
+
+Client ──→ EmployeeRequest ──→ Employee ──→ Database
+
+Client ←── EmployeeResponse ←── Employee
+
+Request DTO = what we're willing to receive.
+
+Response DTO = what we're willing to send back.
+
+This separation becomes especially important in larger applications because you don't want to accidentally expose internal/database information.
+
+For EmployeeHub
+
+We're going to eventually have:
+
+dto/
+├── EmployeeRequest.java
+└── EmployeeResponse.java
+
+But don't create EmployeeResponse yet.
+
+For now, just remember this distinction. Your next coding step will be creating the response DTO.
+
+You've covered the important practical concepts:
+
+What a DTO is — separates API data from the entity.
+Request DTO — data coming into the backend.
+Response DTO — data going back to the client.
+DTO validation with @Valid.
+DTO → Entity mapping.
+Entity → Response DTO mapping.
+Why repositories expect the Entity, not the DTO.
+Why DTOs help prevent exposing database/internal fields.
+Why different operations can use different DTOs.
+Understanding that DTOs can look identical to entities in JSON even though they're different Java classes.
+
+Swagger/OpenAPI::
+  It is primarily API documentation. It describes your endpoints and tells developers how to use them.
+
+For EmployeeHub, it can document:
+
+GET    /api/employees
+POST   /api/employees
+PUT    /api/employees/{id}
+DELETE /api/employees/{id}
+
+Along with:
+
+What each endpoint does
+Required parameters
+Request JSON structure
+Response structure
+Expected HTTP status codes
+Validation/errors
+Authentication requirements
+
+And Swagger UI also lets you try the endpoints directly, which is why it has some testing capability.
+
+So your mental model is right:
+
+Swagger = documentation of your API + an interactive way to try it.
+
+You don't need to memorize a bunch of Swagger code. For your job prep, understand what it is, why teams use it, and
+how to navigate/use Swagger UI.
+
+Steps for Using Swagger:
+Add Swagger/OpenAPI dependency in pom.xml
+
+Step 2 — Start EmployeeHub
+
+Run your Spring Boot application in IntelliJ.
+
+Then open this in your browser:
+
+http://localhost:8080/swagger-ui/index.html
+
+* So Swagger UI isn't your API.
+
+    Your Spring Boot application is your API.
+
+    OpenAPI describes your API.
+
+    Swagger UI displays that description and lets you interact with it.

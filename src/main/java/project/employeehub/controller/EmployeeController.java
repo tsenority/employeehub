@@ -3,6 +3,7 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import project.employeehub.dto.EmployeeRequest;
+import project.employeehub.dto.EmployeeResponse;
 import project.employeehub.entity.Employee;
 import project.employeehub.service.EmployeeService;
 
@@ -18,7 +19,7 @@ public class EmployeeController {
 
     //CRUD OPERATIONS:
     @GetMapping //READ ALL METHOD
-    public List<Employee> getAllEmployees() { //method that returns collection/list
+    public List<EmployeeResponse> getAllEmployees() { //method that returns collection/list
         return employeeService.getAllEmployees(); //calling employeeService method from its class.
     }
 
@@ -33,14 +34,14 @@ public class EmployeeController {
             */
 
     @PostMapping  //CREATE METHOD
-    public Employee createEmployee(@Valid @RequestBody EmployeeRequest employeeRequest) {
+    public EmployeeResponse createEmployee(@Valid @RequestBody EmployeeRequest employeeRequest) {
         return employeeService.createEmployee(employeeRequest);
     }
 
 
 
     @GetMapping("/{id}") //READ BY ID METHOD
-    public Employee getEmployeeBYId(@PathVariable Long id) {
+    public EmployeeResponse getEmployeeBYId(@PathVariable Long id) {
         //@PathVariable ----"Take the value from {id} in the URL and put it into this id variable."
         return employeeService.getEmployeeById(id);
 
@@ -48,9 +49,9 @@ public class EmployeeController {
 
 
     @PutMapping("/{id}") //UPDATE METHOD,  (@PathVariable: Take the id and @RequestBody: return update info for employee
-    public Employee updateEmployee(@PathVariable Long id,
-                                   @Valid @RequestBody Employee employee) { // @Valid = for update method
-        return employeeService.updateEmployee(id, employee);
+    public EmployeeResponse updateEmployee(@PathVariable Long id,
+                                   @Valid @RequestBody EmployeeRequest employeeRequest) { // @Valid = for update method
+        return employeeService.updateEmployee(id, employeeRequest);
     }
 
     @DeleteMapping("/{id}") //DELETE METHOD
