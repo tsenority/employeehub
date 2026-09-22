@@ -133,7 +133,10 @@ Then the service converts the DTO into an Employee entity before saving it.
         public EmployeeResponse getEmployeeById (Long id){
 
             Employee employee = employeeRepository.findById(id)
-                    .orElseThrow();
+                    .orElseThrow(() ->
+            new EmployeeNotFoundException(
+                    "Employee not found with id: " + id
+            ));
 
             EmployeeResponse response = new EmployeeResponse();
 

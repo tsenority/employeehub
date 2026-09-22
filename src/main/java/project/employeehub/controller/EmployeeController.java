@@ -1,4 +1,5 @@
 package project.employeehub.controller;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -12,6 +13,7 @@ import java.util.List;
 
 @RestController // "This class is a Controller that handles HTTP requests and returns data such as JSON."
 @RequestMapping("/api/employees") //It establishes the base URL for all the endpoints inside this Controller.
+@SecurityRequirement(name = "Bearer Authentication") //for jwt verification purpose
 public class EmployeeController {
 
     @Autowired  //"Find the appropriate implementation of EmployeeService and provide it to this variable."
