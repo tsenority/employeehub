@@ -26,6 +26,9 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import project.employeehub.entity.Department;
+import project.employeehub.repository.DepartmentRepository;
+
 @SpringBootTest  // "Start the Spring application context to this class.temporarily so I can test it." just for testing purpose.
 @AutoConfigureMockMvc(addFilters = false) // "Ignore the security filters and let me test whether my controller works."
 // temporarily so I can test it." just for testing purpose.
@@ -38,6 +41,9 @@ public class EmployeeHubIntegrationTest {
     // For Mockito, @mock created a fake repository. Here, we are using the real repository
 
     @Autowired
+    private DepartmentRepository departmentRepository;
+
+    @Autowired
     private EmployeeService employeeService;
 
     @Autowired
@@ -45,24 +51,30 @@ public class EmployeeHubIntegrationTest {
 
 
     @Test
-        //For this method, we are testing “Can Spring create and use my EmployeeRepository?”
     void repositoryLoads() {
 
         List<Employee> employees = employeeRepository.findAll();
-        //Test the repository against your database. "Can my real EmployeeRepository successfully retrieve data?"
 
         assertNotNull(employees);
-        assertFalse(employees.isEmpty());
-
     }
 
     @Test
-    void findEmployeeById() { //test a specific employee using the real repository. ID exists
-        Optional<Employee> employee = employeeRepository.findById(2L);
-        //Optional: "There might be an Employee here, or there might not be."
+    void findEmployeeById() {
 
-        assertTrue(employee.isPresent());
-        //"Did the database actually give us an employee?"
+        Employee employee = new Employee();
+
+        employee.setFirstName("John");
+        employee.setLastName("Smith");
+        employee.setEmail("john.test@example.com");
+        employee.setPhone("1234567890");
+        employee.setSalary(50000.0);
+
+        Employee savedEmployee = employeeRepository.save(employee);
+
+        Optional<Employee> foundEmployee =
+                employeeRepository.findById(savedEmployee.getId());
+
+        assertTrue(foundEmployee.isPresent());
     }
 
     @Test
@@ -118,6 +130,13 @@ public class EmployeeHubIntegrationTest {
     @Test
     void createEmployeeThroughService() {
 
+        // Step 1: Create a department for this test
+        Department department = new Department();
+        department.setName("IT");
+
+        // Step 2: Save the department to MySQL
+        Department savedDepartment = departmentRepository.save(department);
+
         EmployeeRequest request = new EmployeeRequest();
 
         request.setFirstName("Integration");
@@ -125,7 +144,7 @@ public class EmployeeHubIntegrationTest {
         request.setEmail("Integration@test.com");
         request.setPhone("801-522-344");
         request.setSalary(55000);
-        request.setDepartmentId(1L);
+        request.setDepartmentId(savedDepartment.getId());
 
         EmployeeResponse response = employeeService.createEmployee(request);
 
@@ -139,6 +158,16 @@ public class EmployeeHubIntegrationTest {
     @Test
     void getEmployees() throws Exception { //To test the Controller
 
+        // Step 1: Create a department
+        Department department = new Department();
+        department.setName("Human Resources");
+
+// Step 2: Save it to the test database
+        Department savedDepartment = departmentRepository.save(department);
+
+// Step 3: Get the generated department ID
+        Long departmentId = savedDepartment.getId();
+
 
             mockMvc.perform(get("/api/employees")) //Means GET http://localhost:8080/api/employees
                     .andExpect(status().isOk()) //  //"I expect my controller to return HTTP 200."
@@ -150,30 +179,55 @@ public class EmployeeHubIntegrationTest {
     @WithMockUser
     void createEmployee() throws Exception {
 
+        Department department = new Department();
+        department.setName("Human Resources");
+
+        Department savedDepartment = departmentRepository.save(department);
+
+        Long departmentId = savedDepartment.getId();
+
         mockMvc.perform(post("/api/employees")
-                        .contentType(MediaType.APPLICATION_JSON) //Tells "This request body is JSON."
+                        .contentType(MediaType.APPLICATION_JSON)
                         .content("""
-                    {
-                        "firstName": "Mock",
-                        "lastName": "Employee",
-                        "email": "mock@example.com",
-                        "phone": "801-555-1234",
-                        "salary": 50000,
-                        "departmentId": 1
-                    }
-                    """))
+                                {
+                                    "firstName": "Mock",
+                                    "lastName": "Employee",
+                                    "email": "mock@example.com",
+                                    "phone": "801-555-1234",
+                                    "salary": 50000,
+                                    "departmentId": %d
+                                }
+                                """.formatted(departmentId)))
                 .andExpect(status().isOk());
     }
+
 
     @Test
     @WithMockUser
     void getEmployeeById() throws Exception {
 
-        mockMvc.perform(get("/api/employees/2"))
+        // Step 1: Create a test employee
+        Employee employee = new Employee();
+
+        employee.setFirstName("John");
+        employee.setLastName("Smith");
+        employee.setEmail("john.integration@example.com");
+        employee.setPhone("801-555-1234");
+        employee.setSalary(50000.0);
+
+        // Step 2: Save employee to database
+        Employee savedEmployee = employeeRepository.save(employee);
+
+        // Step 3: Get the generated employee ID
+        Long employeeId = savedEmployee.getId();
+
+        // Step 4: Test GET API using that ID
+        mockMvc.perform(get("/api/employees/" + employeeId))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id").value(2))
-                .andExpect(jsonPath("$.firstName").exists())
-                .andExpect(jsonPath("$.email").exists());
+                .andExpect(jsonPath("$.id").value(employeeId))
+                .andExpect(jsonPath("$.firstName").value("John"))
+                .andExpect(jsonPath("$.email")
+                        .value("john.integration@example.com"));
     }
 
     @Test

@@ -8,6 +8,20 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ROOT_PASSWORD: testpassword
+          MYSQL_DATABASE: employeehub
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping -h localhost"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -20,4 +34,6 @@ jobs:
           cache: maven
 
       - name: Build EmployeeHub
-        run: mvn clean package -DskipTests
+        run: mvn clean verify
+        env:
+          SPRING_PROFILES_ACTIVE: ci
