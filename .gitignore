@@ -31,3 +31,8 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### We add .env to .gitignore to help prevent passwords and other secrets from being uploaded to GitHub. ###
+.env
+
+/src/main/resources/application.properties
