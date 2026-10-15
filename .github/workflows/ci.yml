@@ -52,7 +52,7 @@ jobs:
           echo "Repository: $GITHUB_REPOSITORY"
           echo "Branch: $GITHUB_REF"
           echo "Role ARN: ${{ vars.AWS_ROLE_ARN }}"
-         if [ -n "$ACTIONS_ID_TOKEN_REQUEST_URL" ]; then echo "OIDC request available: true"; else echo "OIDC request available: false"; fi
+          echo "OIDC request available: ${ACTIONS_ID_TOKEN_REQUEST_URL:+true}"
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
